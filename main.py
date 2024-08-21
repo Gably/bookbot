@@ -3,8 +3,19 @@ def main():
         book = f.read()
     
     num_of_words = count_words(book)
-    print(f"Number of words: {num_of_words}")
-    print(count_char(book))
+    character_count_dict = count_char(book)
+    #print(character_count_dict)
+    character_count_list = list(character_count_dict.items())
+    #print(character_count_list)
+    character_count_list.sort(reverse = True, key = sort_on)
+    #print(character_count_list)
+
+    print("--- Begin report of books/frankenstein.txt ---")
+    print(f"{num_of_words} words found in the document\n")
+    for character in character_count_list:
+        print(f"The '{character[0]}' character was found {character[1]} times")
+    print("--- End report ---")
+
 
 def count_words(book):
     words = book.split()
@@ -97,6 +108,9 @@ def count_char(book):
     char_count['z'] = z
 
     return char_count
+
+def sort_on(list):
+    return list[1]
 
 
 main()
