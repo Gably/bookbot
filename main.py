@@ -1,116 +1,49 @@
 def main():
-    with open("books/frankenstein.txt") as f:
-        book = f.read()
-    
+    path = "books/frankenstein.txt"
+    book = book_to_text(path)
     num_of_words = count_words(book)
     character_count_dict = count_char(book)
-    #print(character_count_dict)
-    character_count_list = list(character_count_dict.items())
-    #print(character_count_list)
-    character_count_list.sort(reverse = True, key = sort_on)
-    #print(character_count_list)
-
+    sorted_character_count_list = char_count_dict_to_sorted_list_of_dict(character_count_dict)
+    
     print("--- Begin report of books/frankenstein.txt ---")
     print(f"{num_of_words} words found in the document\n")
-    for character in character_count_list:
-        print(f"The '{character[0]}' character was found {character[1]} times")
+    for character in sorted_character_count_list:
+        if character["char"].isalpha():
+            print(f"The '{character['char']}' character was found {character['count']} times")
     print("--- End report ---")
 
+def book_to_text(path_to_book):
+    with open(path_to_book) as f:
+        return f.read()
 
 def count_words(book):
     words = book.split()
     return len(words)
 
 def count_char(book):
-    char_count = {}
-    a=b=c=d=e=f=g=h=i=j=k=l=m=n=o=p=q=r=s=t=u=v=w=x=y=z = 0
-    book_in_lowercase = book.lower()
-    
-    for char in book_in_lowercase:
-        if char == 'a':
-            a += 1
-        elif char == 'b':
-            b += 1
-        elif char == 'c':
-            c += 1
-        elif char == 'd':
-            d += 1
-        elif char == 'e':
-            e += 1
-        elif char == 'f':
-            f += 1
-        elif char == 'g':
-            g += 1
-        elif char == 'h':
-            h += 1
-        elif char == 'i':
-            i += 1
-        elif char == 'j':
-            j += 1
-        elif char == 'k':
-            k += 1
-        elif char == 'l':
-            l += 1
-        elif char == 'm':
-            m += 1
-        elif char == 'n':
-            n += 1
-        elif char == 'o':
-            o += 1
-        elif char == 'p':
-            p += 1
-        elif char == 'q':
-            q += 1
-        elif char == 'r':
-            r += 1
-        elif char == 's':
-            s += 1
-        elif char == 't':
-            t += 1
-        elif char == 'u':
-            u += 1
-        elif char == 'v':
-            v += 1
-        elif char == 'w':
-            w += 1
-        elif char == 'x':
-            x += 1
-        elif char == 'y':
-            y += 1
-        elif char == 'z':
-            z += 1
+    char_count_dict = {}
+    lowered_book = book.lower()
+    for char in lowered_book:
+        if char not in char_count_dict:
+            char_count_dict[char] = 1
+        else:
+            char_count_dict[char] += 1
+    return char_count_dict
 
-    char_count['a'] = a
-    char_count['b'] = b
-    char_count['c'] = c
-    char_count['d'] = d
-    char_count['e'] = e
-    char_count['f'] = f
-    char_count['g'] = g
-    char_count['h'] = h
-    char_count['i'] = i
-    char_count['j'] = j
-    char_count['k'] = k
-    char_count['l'] = l
-    char_count['m'] = m
-    char_count['n'] = n
-    char_count['o'] = o
-    char_count['p'] = p
-    char_count['q'] = q
-    char_count['r'] = r
-    char_count['s'] = s
-    char_count['t'] = t
-    char_count['u'] = u
-    char_count['v'] = v
-    char_count['w'] = w
-    char_count['x'] = x
-    char_count['y'] = y
-    char_count['z'] = z
+def char_count_dict_to_sorted_list_of_dict(char_count_dict):
+    list_of_dict = []
+    for char in char_count_dict:
+        list_of_dict.append(
+            {
+            "char": char, 
+            "count": char_count_dict[char]
+            }
+            )
+    list_of_dict.sort(reverse = True, key = sort_on)
+    return list_of_dict
 
-    return char_count
-
-def sort_on(list):
-    return list[1]
+def sort_on(dict):
+    return dict["count"]
 
 
 main()
